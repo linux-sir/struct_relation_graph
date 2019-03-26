@@ -191,7 +191,7 @@ node [shape=record,height=.1]; \n'
     for x in data:
         if data[x][0] not in str_filter:
             continue
-        str='node%d[label ="{<f0>%s' %(data[x][0], x)
+        str='node%d[label ="{<f0> ------ %s ------' %(data[x][0], x)
         index = 1
         for y in data[x][1:]:
             if not judge_element_is_fun(y):
