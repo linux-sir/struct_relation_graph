@@ -12,7 +12,7 @@ string_t [a-zA-Z0-9_\-]+
  
  
 string_head struct[ \t]+.{string_t}[ \t]*[\n]?\{
-string_anon_head (struct[ \t]*[\n]*[ \t]*\{)
+string_anon_head [ \t]*struct[ \t]*[\n]?[ \t]*\{
 string_element {string_t}[ \t]+[^;{]+[ \t]*\;
 macro_define [ \t]*#.+\n
  
@@ -24,7 +24,7 @@ macro_define [ \t]*#.+\n
 <STRUCT>struct[ \t]+.{string_t}[ \t]*[\n]?\{([^}]|[\r\n])*\}\; {fprintf(yyout,"%s\n",yytext);}
 <COMMENT>{comment_t} ;
 <COMMENT>{macro_define} ;
-<COMMENT>{string_anon_head} printf("------> threa are anonymous structs,please rename them !!!!!!!!!\n") ;
+<COMMENT>{string_anon_head} printf("------> threa are anonymous structs,please rename them !!!!!!!!!\n") ;{fprintf(yyout,"struct anonymous aaa\n");}
 <COMMENT>. fprintf(yyout,"%s",yytext) ;
 <COMMENT>\n fprintf(yyout,"\n") ;
 <STRUCT>.  ;

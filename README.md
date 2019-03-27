@@ -13,7 +13,9 @@ gcc lex.yy.c -o parse -ll  # 生成parse可执行文件
 - 执行命令
 ```
 $ python parse-struct.py -d dest.c
+
 ```
+注：parse-struct.py中定义了parse的位置，需要修改为实际路径后才能正常使用
 ### 示例
 ```
 $ python parse-struct.py -d example/
@@ -31,6 +33,7 @@ total file is 10
 注：此工具对于结构体定义中包含匿名结构体定义时，该结构体定义会被忽略，故出现提示‘------> threa are anonymous structs,please rename them !!!!!!!!!’,需要手工将结构体定义修改掉。（其实这样并不会影响关系图的效果）
 ## 已知问题
 - 不兼容结构体定义内包含匿名结构体定义的情况
+- 
 
 # 参考
 - https://blog.csdn.net/peterbig/article/details/74614949
