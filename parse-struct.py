@@ -174,6 +174,8 @@ def get_struct(fileName):
                 one_struct.append(str_ele)
             else:
                 continue
+        if len(one_struct) != 0:
+            RESULT_STRUCT.append(one_struct)
  
  
 def walk_dir(dirName, do_work):
