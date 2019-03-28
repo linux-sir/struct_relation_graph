@@ -7,6 +7,7 @@ import sys
 import string
 import getopt
 import copy
+import re
  
  
 parse_tool = '/home/magc/workspace/lex/parse'  #this is lex tools path, please modify in you os
@@ -20,7 +21,39 @@ frame_weight = 300
 frame_space = 100
  
  
- 
+def convert_struct( struct_file ):
+    """
+    工具的目标是体现结构体之间的关系，对于匿名结构体是内部使用的，不会与其它结构体共用，所以，只是将匿名结构体替换为'struct anonymous a,b;'形式，不画出其匿名结构体的内容了
+    
+    功能：读出原文件，找到匿名结构体的定义，并替换之,生成新文件
+
+    """
+    pattern = re.compile(r'[ \t]*struct[ \t]+\{')
+    handle = open(struct_file)
+    lines = handle.readlines()
+    handle.close()
+    new_lines = []
+    tag = 0
+    for line in lines:
+        if pattern.match(line) is not None:
+            tag = 1
+            continue
+        if tag == 1 and '}' in line and ';' in line :
+            line = line.replace('}','struct anonymous ')
+            new_lines.append(line)
+            tag = 0
+            continue
+        if tag == 1 :
+            continue
+        else:
+            new_lines.append(line)
+     
+    # 写入新文件
+    newfile = open(struct_file+'.new','w')
+    newfile.writelines(new_lines)
+    newfile.close()
+
+    
  
 def file_type_ok(fileName):
     global FILE_TYPE
@@ -36,7 +69,8 @@ def do_parse(fileName):
  
  
     if file_type_ok(fileName):
-        cmd = '%s %s' %(parse_tool, fileName)
+        convert_struct(fileName)
+        cmd = '%s %s' %(parse_tool, fileName+'.new')
         os.system(cmd)
  
  
@@ -91,6 +125,7 @@ def get_struct_element_name(name):
  
  
 def get_struct_name(data):
+    #print '----data:',data
     ret = {}
     index = 0
     for m in data:
@@ -118,15 +153,19 @@ def get_struct(fileName):
         handle = open(fileName)
         lines = handle.readlines()
         handle.close()
-        os.remove(fileName)
+        #os.remove(fileName)
         one_struct=[]
         for line in lines:
+            #print '----',line
+            if '#' in line:
+                continue
             if 'TTT_HEAD:' in line:
                 if len(one_struct) != 0:
                     RESULT_STRUCT.append(one_struct)
                     one_struct = []
                 str_head = line[line.index('TTT_HEAD:')+len('TTT_HEAD:'):-1]
                 str_head = filter_struct_name(str_head)
+                print '----->struct:',str_head
                 one_struct.append(str_head)    
             elif 'TTT_ELE:' in line:
                 str_ele = line[line.index('TTT_ELE:')+len('TTT_ELE:'):-1]
@@ -177,6 +216,7 @@ node [shape=record,height=.1]; \n'
             if judge_element_is_strut(y):
                 ele_struct_name = get_struct_element_name(y)
                 if ele_struct_name is not None and ele_struct_name in data:
+                    #print '---add:',ele_struct_name
                     if '*' not in y:
                         str='node%d: f%d->"node%d":f%d[dir=none color="red"];\n' %(data[x][0],index,data[ele_struct_name][0],0)
                     else:
