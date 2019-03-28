@@ -72,6 +72,7 @@ def do_parse(fileName):
         convert_struct(fileName)
         cmd = '%s %s' %(parse_tool, fileName+'.new')
         os.system(cmd)
+        os.remove(fileName+'.new')
  
  
  
@@ -153,7 +154,7 @@ def get_struct(fileName):
         handle = open(fileName)
         lines = handle.readlines()
         handle.close()
-        #os.remove(fileName)
+        os.remove(fileName)
         one_struct=[]
         for line in lines:
             #print '----',line
