@@ -1,6 +1,7 @@
 # struct_relation_graph
 ## 设计目标
-用于将C语言中结构体定义转化为图形
+- 用于将C语言中结构体定义转化为图形
+
 ## 用法
 ### 编译
 ```
@@ -17,6 +18,14 @@ $ python parse-struct.py -d test
 
 ```
 注：parse-struct.py中定义了parse的位置，需要修改为实际路径后才能正常使用
+
+- 为结构体添加注释说明
+先在desc_config中添加注释内容，格式是 struct_name = 功能说明 
+然后执行脚本：
+```
+$ python append_desc.py
+
+```
 ### 示例
 ```
 $ python parse-struct.py -d example/
