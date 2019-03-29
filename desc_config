@@ -1,0 +1,6 @@
+kvm=表示虚拟机
+kvm_vcpu=表示虚拟机CPU
+kvm_vcpu_arch=表示虚拟机CPU的体系架构信息
+kvm_run=虚拟机运行时信息
+aaa= test
+kvm_vm_stat=虚拟机状态信息
