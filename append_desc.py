@@ -6,7 +6,7 @@ import re
 
 
 def get_description():
-    """TODO: 向dot文件中追加node的描述信息 
+    """TODO: 读取desc_config 文件，获得结构体名字和描述的键值对
 
     :arg1: TODO
     :returns: TODO
@@ -27,7 +27,7 @@ def get_description():
             
 
 def get_node_name(lines):
-    """TODO: 从graph中获取node0和Name的对应关系
+    """TODO: 从graph中获取node和Name的键值对
     :returns: TODO
 
     """
@@ -40,12 +40,14 @@ def get_node_name(lines):
     return node_name_dict        
 def add_description():
     """TODO: Docstring for add_description.
+    实现原理：读取当前目录下的desc_config文件中的描述内容，然后添加到当前目录的graph文件中，最后生成graph.png文件
 
     :arg1: TODO
     :returns: TODO
 
     """
     desc_list = get_description()
+    # 读取当前目录下的graph
     fdot = open('graph')
     lines = fdot.readlines()
     lines = lines[:-1] # 去掉最后一行的'}'
@@ -67,14 +69,10 @@ def add_description():
     fdot = open('graph.tmp','w')
     fdot.writelines(lines)
     fdot.close()
+    # 生成最终图片graph.png
     os.system('dot -Tpng graph.tmp -o graph.png')
     os.remove('graph.tmp')
     print '------> graph.png'
-
-    
-            
-
-
 
 
 
